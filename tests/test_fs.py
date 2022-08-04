@@ -22,3 +22,11 @@ class TestFS(TestCase):
 
         expected_directory = b'foo'
         self.assertIn(expected_directory, actual_result)
+
+    def test_print_contents_of_cwd_success_with_mocking_context(self):
+        """Test print_contents_of_cwd function"""
+        with mock.patch('core.fs.check_output', return_value=b'foo\nbar\n'):
+            actual_result = fs.print_contents_of_cwd()
+
+        expected_directory = b'foo'
+        self.assertIn(expected_directory, actual_result)
