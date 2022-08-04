@@ -2,7 +2,7 @@
 import unittest
 from unittest.mock import patch
 
-from employee import Employee
+from core.employee import Employee
 
 
 class TestEmployee(unittest.TestCase):
@@ -61,7 +61,7 @@ class TestEmployee(unittest.TestCase):
 
     def test_monthly_schedule(self):
         """Test monthly_schedule method"""
-        with patch('employee.requests.get') as mocked_get:
+        with patch('core.employee.requests.get') as mocked_get:
             mocked_get.return_value.ok = True
             mocked_get.return_value.text = 'Success'
 
