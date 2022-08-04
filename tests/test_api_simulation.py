@@ -2,14 +2,21 @@
 
 from unittest import TestCase, mock
 
+from core.api_simulation import google
+
 
 class TestAPI(TestCase):
     """Tests for external API"""
 
-    @mock.patch('core.api_simulation.google.get_data', side_effect=Exception('Boom!'))
-    def test_external_api_mock_exception(self, mock_google):
+    @mock.patch.object(google, 'get_data', return_value='data_google')
+    def test_external_api_mock_patch_object(self, mock_google):
         """Test external API calls with mock"""
-        self.assertRaises(Exception, mock_google)
+        self.assertEqual(google.call_google_api(), 'data_google')
+
+    # @mock.patch('core.api_simulation.google.get_data', side_effect=Exception('Boom!'))
+    # def test_external_api_mock_exception(self, mock_google):
+    #     """Test external API calls with mock"""
+    #     self.assertRaises(Exception, mock_google)
 
     # @mock.patch('core.api_simulation.google.get_data', side_effect=[
     #     "data_google1",
