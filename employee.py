@@ -1,5 +1,7 @@
 """Employee module"""
 
+import requests
+
 
 class Employee:
     """A sample Employee class"""
@@ -23,3 +25,13 @@ class Employee:
     def apply_raise(self):
         """Employee raise"""
         self.pay = int(self.pay * self.raise_amt)
+
+    # Mocking
+    def monthly_schedule(self, month):
+        """Employee's schedule for a given month"""
+        response = requests.get(
+            f'http://company.com/{self.last_name.lower()}/{month.lower()}')
+        if response.ok:
+            return response.text
+        else:
+            return 'Bad Response!'
