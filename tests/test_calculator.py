@@ -2,7 +2,7 @@
 
 import unittest
 
-import calculator
+from core import calculator
 
 
 class TestCalculator(unittest.TestCase):
