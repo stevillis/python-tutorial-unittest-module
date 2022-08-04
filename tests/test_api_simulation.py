@@ -18,3 +18,10 @@ class TestAPI(TestCase):
         """Test external API calls with mock"""
         self.assertEqual(google.call_google_api(), 'data_google')
         self.assertEqual(facebook.call_facebook_api(), 'data_1')
+
+    @mock.patch('core.api_simulation.facebook.get_data', return_value='data_facebook')
+    @mock.patch('core.api_simulation.google.get_data', return_value='data_google')
+    def test_external_api_multiple_mock(self, mock_google, mock_facebook):
+        """Test external API calls with mock"""
+        self.assertEqual(google.call_google_api(), 'data_google')
+        self.assertEqual(facebook.call_facebook_api(), 'data_facebook')
