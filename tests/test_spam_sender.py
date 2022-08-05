@@ -4,7 +4,7 @@ import unittest
 from typing import Tuple
 from unittest.mock import Mock
 
-from core.dev_pro.spam_sender import SpamSender
+from core.dev_pro.spam_sender import EmailChannel, SpamSender
 
 
 class EmailChannelMock:  # pylint: disable=too-few-public-methods
@@ -73,7 +73,7 @@ class SpamSenderTestCase(unittest.TestCase):
             self.receivers[0],
             'John Cena, Lorem ipsum dolor sit amet'
         )
-        mocked_channel = Mock()
+        mocked_channel = Mock(spec=EmailChannel)
         mocked_channel.send.return_value = return_value
 
         spam_sender.email_channels = [
@@ -92,7 +92,7 @@ class SpamSenderTestCase(unittest.TestCase):
     def test_email_channel_called(self):
         """Test if mocked email channel was called"""
         spam_sender = SpamSender([self.receivers[0]])
-        email_channel_mock = Mock()
+        email_channel_mock = Mock(spec=EmailChannel)
 
         spam_sender.email_channels = [
             email_channel_mock
