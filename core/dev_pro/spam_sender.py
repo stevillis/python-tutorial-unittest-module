@@ -8,7 +8,7 @@ class SpamSender:
     """SpamSender class"""
 
     def __init__(self, receivers: Optional[List[str]] = None):
-        self._receivers = receivers
+        self._receivers = receivers if receivers else []
 
     @property
     def receivers(self):
