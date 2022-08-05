@@ -2,6 +2,7 @@
 
 import unittest
 from typing import Tuple
+from unittest.mock import Mock
 
 from core.dev_pro.spam_sender import SpamSender
 
@@ -67,12 +68,22 @@ class SpamSenderTestCase(unittest.TestCase):
     def test_send_spam(self):
         """Test spam sending"""
         spam_sender = SpamSender([self.receivers[0]])
+
+        return_value = (
+            self.receivers[0],
+            'John Cena, Lorem ipsum dolor sit amet'
+        )
+        mocked_channel = Mock()
+        mocked_channel.send.return_value = return_value
+
         spam_sender.email_channels = [
-            EmailChannelMock()
+            mocked_channel
         ]  # dependency injection
+
         expected_result = [
             (self.receivers[0], 'John Cena, Lorem ipsum dolor sit amet'),
         ]
+
         self.assertEqual(
             list(spam_sender.send_spam('Lorem ipsum dolor sit amet')),
             expected_result
@@ -81,17 +92,19 @@ class SpamSenderTestCase(unittest.TestCase):
     def test_email_channel_called(self):
         """Test if mocked email channel was called"""
         spam_sender = SpamSender([self.receivers[0]])
-        email_channel_mock = EmailChannelMock()
+        email_channel_mock = Mock()
+
         spam_sender.email_channels = [
             email_channel_mock
         ]  # dependency injection
 
         message = 'Lorem ipsum dolor sit amet'
         list(spam_sender.send_spam(message))
-        self.assertTrue(email_channel_mock.send_method_called)
-        self.assertEqual(email_channel_mock.send_args,
-                         [self.receivers[0], message]
-                         )
+
+        email_channel_mock.send.assert_called_once_with(
+            self.receivers[0],
+            message
+        )
 
 
 if __name__ == '__main__':
