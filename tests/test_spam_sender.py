@@ -1,8 +1,17 @@
 """Tests for spam sender"""
 
 import unittest
+from typing import Tuple
 
 from core.dev_pro.spam_sender import SpamSender
+
+
+class EmailChannelMock:  # pylint: disable=too-few-public-methods
+    """Fake Email channel class"""
+
+    def send(self, receiver: str, msg: str) -> Tuple[str, str]:  # pylint: disable=no-self-use, unused-argument
+        """Simulate message sending to receiver"""
+        return 'john.cena@gmail.com', 'John Cena, Lorem ipsum dolor sit amet'
 
 
 class SpamSenderTestCase(unittest.TestCase):
@@ -31,10 +40,12 @@ class SpamSenderTestCase(unittest.TestCase):
 
     def test_send_spam(self):
         """Test spam sending"""
-        spam_sender = SpamSender(self.receivers)
+        spam_sender = SpamSender([self.receivers[0]])
+        spam_sender.email_channels = [
+            EmailChannelMock()
+        ]  # dependency injection
         expected_result = [
             (self.receivers[0], 'John Cena, Lorem ipsum dolor sit amet'),
-            (self.receivers[1], 'Dua Lipa, Lorem ipsum dolor sit amet'),
         ]
         self.assertEqual(
             list(spam_sender.send_spam('Lorem ipsum dolor sit amet')),

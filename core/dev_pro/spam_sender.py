@@ -16,6 +16,7 @@ class EmailChannel:  # pylint: disable=too-few-public-methods
 
     def send(self, receiver: str, msg: str) -> Tuple[str, str]:  # pylint: disable=no-self-use
         """Send message to receiver"""
+        print('Sending email')
         receiver_name = _find_name_from_email(receiver)
         msg_with_receiver_name = f'{receiver_name}, {msg}'
         return receiver, msg_with_receiver_name
@@ -28,25 +29,25 @@ class SpamSender:
         self._receivers = receivers if receivers else []
         self._email_channels = [EmailChannel()]
 
-    @ property
+    @property
     def receivers(self):
         """Get receivers"""
         return self._receivers
 
-    @ receivers.setter
+    @receivers.setter
     def receivers(self, value):
         """Set receivers list"""
         self._receivers = value
 
-    @ property
+    @property
     def email_channels(self):
         """Get email channels"""
         return self._email_channels
 
-    @ email_channels.setter
+    @email_channels.setter
     def email_channels(self, value):
         """Set email channels"""
-        self.email_channels = value
+        self._email_channels = value
 
     def add_receiver(self, receiver: str):
         """Add email receiver to the receivers list"""
